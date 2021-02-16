@@ -1,14 +1,23 @@
 import {getRandomInt, stringHasMaxLength} from './util.js';
 
 const COMMENT_MAX_LENGTH = 140;
+const MAX_COMMENTS_NUMBER = 20;
 
 const generateObjects = function (quantity) {
-  const MAX_COMMENTS_NUMBER = 20;
+  const generateUniqueId = function (ids, maxRandom) {
+    let id;
+    do {
+      id = getRandomInt(1, maxRandom);
+    } while (ids.includes(id));
+    ids.push(id);
+    return id;
+  }
 
-  let id = 1;
+  let objectsIds = [];
   let commentsIds = [];
 
   return new Array(quantity).fill(0).map(() => {
+    const id = generateUniqueId(objectsIds, 25);
     const url = `photos/${id}.jpg`;
     const description = `Фотография #${id}`;
     const commentsNumber = getRandomInt(1, MAX_COMMENTS_NUMBER);
@@ -43,12 +52,7 @@ const generateObjects = function (quantity) {
     }
 
     const comments = new Array(commentsNumber).fill(0).map(() => {
-      let id;
-      do {
-        id = getRandomInt(1, quantity * MAX_COMMENTS_NUMBER);
-      } while (commentsIds.includes(id));
-      commentsIds.push(id);
-
+      let id = generateUniqueId(commentsIds, quantity * MAX_COMMENTS_NUMBER);
       const avatar = `img/avatar-${getRandomInt(1, 6)}.svg`;
       
       let message, i;
@@ -73,7 +77,7 @@ const generateObjects = function (quantity) {
     });
 
     return {
-      id: id++,
+      id: id,
       url: url,
       description: description,
       likes: likes,
