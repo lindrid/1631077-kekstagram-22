@@ -16,9 +16,4 @@ const getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
 }
 
-const stringHasMaxLength = (str, maxLength) => str.length <= maxLength;
-
-//getRandomInt(1, 10);
-//stringHasMaxLength('aaa', 2); //false. ...('aaa', 3) //true
-
-export {getRandomInt, stringHasMaxLength};
+export {getRandomInt};

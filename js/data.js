@@ -1,7 +1,14 @@
-import {getRandomInt, stringHasMaxLength} from './util.js';
+import {getRandomInt} from './util.js';
 
 const COMMENT_MAX_LENGTH = 140;
 const MAX_COMMENTS_NUMBER = 20;
+const PHOTOS_URL = 'photos/';
+const AVATARS_URL = 'img/avatar-';
+const MIN_LIKES_NUMBER = 15;
+const MAX_LIKES_NUMBER = 200;
+
+const LAST_MALE_NAME_INDEX = 4;
+const INDEX_OF_MESSAGE_FOR_MALE = 4;
 
 const generateObjects = function (quantity) {
   const messages = [
@@ -28,38 +35,35 @@ const generateObjects = function (quantity) {
     'Людмила',
   ];
 
-  const generateUniqueId = function (ids, maxRandom) {
+  const pushUniqueRandomId = function (ids, randomMax) {
     let id;
     do {
-      id = getRandomInt(1, maxRandom);
+      id = getRandomInt(1, randomMax);
     } while (ids.includes(id));
     ids.push(id);
     return id;
   }
 
   const canMessageStayWithName = function (messageIndex, nameIndex) {
-    return !(messageIndex === 4 && nameIndex > 4);
+    return !(messageIndex === INDEX_OF_MESSAGE_FOR_MALE && nameIndex > LAST_MALE_NAME_INDEX);
   }
 
   let objectsIds = [];
   let commentsIds = [];
 
   return new Array(quantity).fill(0).map(() => {
-    const id = generateUniqueId(objectsIds, 25);
-    const url = `photos/${id}.jpg`;
+    const id = pushUniqueRandomId(objectsIds, quantity);
+    const url = `${PHOTOS_URL}${id}.jpg`;
     const description = `Фотография #${id}`;
     const commentsLength = getRandomInt(1, MAX_COMMENTS_NUMBER);
-    const likes = getRandomInt(15, 200);
+    const likes = getRandomInt(MIN_LIKES_NUMBER, MAX_LIKES_NUMBER);
 
     const comments = new Array(commentsLength).fill(0).map(() => {
-      let id = generateUniqueId(commentsIds, quantity * MAX_COMMENTS_NUMBER);
-      const avatar = `img/avatar-${getRandomInt(1, 6)}.svg`;
+      let id = pushUniqueRandomId(commentsIds, quantity * MAX_COMMENTS_NUMBER);
+      const avatar = `${AVATARS_URL}${getRandomInt(1, 6)}.svg`;
       
-      let message, i;
-      do {
-        i = getRandomInt(0, messages.length - 1);
-      } while (!stringHasMaxLength(messages[i], COMMENT_MAX_LENGTH));
-      message = messages[i];
+      const i = getRandomInt(0, messages.length - 1);
+      const message = messages[i];
 
       let j;
       do {

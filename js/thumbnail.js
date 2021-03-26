@@ -1,13 +1,4 @@
-import {drawWindow as drawPictureWindow} from './big-picture.js';
-
-const pictures = document.querySelector('.pictures');
-
-const onPictureClick = function (evt) {
-  if (evt.target.className === 'picture__img') {
-    console.log(evt.currentTarget.photo);
-    drawPictureWindow(evt.currentTarget.photo);
-  }
-}
+const picturesElement = document.querySelector('.pictures');
 
 /*
  * example of array:
@@ -26,29 +17,30 @@ const onPictureClick = function (evt) {
  * ]
  * 
  */
-const drawThumbnails = function (photos) {
+const drawThumbnails = function (photos, onPictureClick) {
   const fragment = document.createDocumentFragment();
+  const pictureTemplate = document.querySelector('#picture').content
+    .querySelector('.picture');
 
   photos.forEach(photo => {
-    const pictureTemplate = document.querySelector('#picture').content;
-    const elementTemplate = pictureTemplate.querySelector('.picture');
-    const picture = elementTemplate.cloneNode(true);
+    const pictureElement = pictureTemplate.cloneNode(true);
 
-    const image = picture.querySelector('.picture__img');
-    image.src = photo.url;
+    const imageElement = pictureElement.querySelector('.picture__img');
+    imageElement.src = photo.url;
 
-    const likes = picture.querySelector('.picture__likes');
-    likes.textConent = photo.likes;
+    const likesElement = pictureElement.querySelector('.picture__likes');
+    likesElement.textConent = photo.likes;
 
-    const comments = picture.querySelector('.picture__comments');
-    comments.textContent = photo.comments.length;
+    const commentsElement = pictureElement.querySelector('.picture__comments');
+    commentsElement.textContent = photo.comments.length;
 
-    picture.photo = photo;
-    picture.addEventListener('click', onPictureClick);
-    fragment.appendChild(picture);
+    pictureElement.photo = photo;
+    pictureElement.addEventListener('click', onPictureClick);
+    
+    fragment.appendChild(pictureElement);
   });
 
-  return pictures.appendChild(fragment);
+  return picturesElement.appendChild(fragment);
 }
 
 export {drawThumbnails};
