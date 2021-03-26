@@ -1,22 +1,5 @@
 const picturesElement = document.querySelector('.pictures');
 
-/*
- * example of array:
- * photos = [
- *   [
- *     comments: (3) [{…}, {…}, {…}]
-       description: "Фотография #25"
-       id: 25
-       likes: 137
-       url: "photos/25.jpg"
- *   ]
- *   ...
- *   [
- *     ...
- *   ]
- * ]
- * 
- */
 const drawThumbnails = function (photos, onPictureClick) {
   const fragment = document.createDocumentFragment();
   const pictureTemplate = document.querySelector('#picture').content

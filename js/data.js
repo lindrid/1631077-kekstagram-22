@@ -1,6 +1,5 @@
 import {getRandomInt} from './util.js';
 
-const COMMENT_MAX_LENGTH = 140;
 const MAX_COMMENTS_NUMBER = 20;
 const PHOTOS_URL = 'photos/';
 const AVATARS_URL = 'img/avatar-';
