@@ -2,6 +2,11 @@
 import {generateObjects as generatePhotoObjects} from './data.js';
 import {drawThumbnails} from './thumbnail.js';
 import {drawWindow as drawPictureWindow} from './big-picture.js';
+import {
+  displayOverlayOnUpload,
+  setMinusButtonListener,
+  setPlusButtonListener
+} from './img-upload-overlay.js';
 
 const GENERATED_OBJECTS_NUMBER = 25;
 
@@ -12,3 +17,6 @@ const onThumbnailClick = function (evt) {
 }
 
 drawThumbnails(photos, onThumbnailClick);
+displayOverlayOnUpload();
+setMinusButtonListener();
+setPlusButtonListener();
