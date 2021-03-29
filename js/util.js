@@ -16,4 +16,8 @@ const getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
 }
 
-export {getRandomInt};
+const isEscPressed = (evt) => {
+  return evt.key === 'Escape';
+};
+
+export {getRandomInt, isEscPressed};

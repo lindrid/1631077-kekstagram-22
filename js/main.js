@@ -5,7 +5,12 @@ import {drawWindow as drawPictureWindow} from './big-picture.js';
 import {
   displayOverlayOnUpload,
   setMinusButtonListener,
-  setPlusButtonListener
+  setPlusButtonListener,
+  setHashtagsInputValidation,
+  setEffectsListClickListener,
+  setCommentInputValidation,
+  setOverlayCloseListeners,
+  setOverlayFormSubmitListener
 } from './img-upload-overlay.js';
 
 const GENERATED_OBJECTS_NUMBER = 25;
@@ -17,6 +22,14 @@ const onThumbnailClick = function (evt) {
 }
 
 drawThumbnails(photos, onThumbnailClick);
-displayOverlayOnUpload();
-setMinusButtonListener();
-setPlusButtonListener();
+
+const doOnSuccess = function () {
+  setMinusButtonListener();
+  setPlusButtonListener();
+  setEffectsListClickListener();
+  setHashtagsInputValidation();
+  setCommentInputValidation();
+  setOverlayCloseListeners();
+}
+
+displayOverlayOnUpload(doOnSuccess);
