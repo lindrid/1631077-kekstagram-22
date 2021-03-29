@@ -9,8 +9,7 @@ import {
   setHashtagsInputValidation,
   setEffectsListClickListener,
   setCommentInputValidation,
-  setOverlayCloseListeners,
-  setOverlayFormSubmitListener
+  setOverlayCloseListeners
 } from './img-upload-overlay.js';
 
 const GENERATED_OBJECTS_NUMBER = 25;

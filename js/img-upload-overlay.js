@@ -1,4 +1,4 @@
-/* global noUISlider */
+/* global noUiSlider */
 import {isEscPressed} from './util.js';
 
 const MIN_SCALE_VALUE = 25;
@@ -27,11 +27,11 @@ const effectLevelElement = overlayElement.querySelector('.effect-level__value');
 const sliderDivElement = overlayElement.querySelector('.effect-level__slider');
 
 const sliderOptions = {
-  'chrome': {range: {min: 0,max: 1}, step: 0.1, start: 1,},
-  'sepia': {range: {min: 0,max: 1}, step: 0.1, start: 1,},
-  'marvin': {range: {min: 0,max: 100}, step: 1, start: 100,},
-  'phobos': {range: {min: 0,max: 3}, step: 0.1, start: 3,},
-  'heat': {range: {min: 1,max: 3}, step: 0.1, start: 3,},
+  'chrome': {range: {min: 0,max: 1}, step: 0.1, start: 1},
+  'sepia': {range: {min: 0,max: 1}, step: 0.1, start: 1},
+  'marvin': {range: {min: 0,max: 100}, step: 1, start: 100},
+  'phobos': {range: {min: 0,max: 3}, step: 0.1, start: 3},
+  'heat': {range: {min: 1,max: 3}, step: 0.1, start: 3},
 }
 
 const filter = {
@@ -75,12 +75,12 @@ const displayOverlayOnUpload = function (doOnSuccess) {
 
 const onMinusButtonClick = function () {
   const scaleValue = scaleControlElement.value.slice(0, -1);
-    if (+scaleValue === MIN_SCALE_VALUE) {
-      return;
-    }
-    const newValue = +scaleValue - SCALE_DIFF;
-    scaleControlElement.value = `${newValue}%`; 
-    previewImageElement.style = `transform: scale(${newValue / 100})`; 
+  if (+scaleValue === MIN_SCALE_VALUE) {
+    return;
+  }
+  const newValue = +scaleValue - SCALE_DIFF;
+  scaleControlElement.value = `${newValue}%`; 
+  previewImageElement.style = `transform: scale(${newValue / 100})`; 
 }
 
 const setMinusButtonListener = function () { 
@@ -132,46 +132,46 @@ const setEffectsListClickListener = function () {
 }
 
 const hashtagsElement = overlayElement.querySelector('.text__hashtags');
-const regex = /^(\#[а-яА-ЯёЁ0-9a-zA-Z]+)$/;
+const regex = /^(#[а-яА-ЯёЁ0-9a-zA-Z]+)$/;
 
 const onHashtagsElementInput = function () {
   const value = hashtagsElement.value;
-    const array = value.split(/\s/); 
-    let hashtagsNumber = 0;
-    for (let str of array) {
-      if (str[0] === '#') {
-        if (str.length === 1) {
-          hashtagsElement.setCustomValidity('хеш-тег не может состоять только из одной решётки');
-          break;
-        }
-        const match = regex.exec(str);
-        if (!match) {
-          hashtagsElement.setCustomValidity(`Неправильный хэштег ${str}. Строка после решётки может состоять только из букв ` +
-            '(русских и английских) и чисел');
-            break;
-        }
-      }
-      else if (str !== '') {
-        hashtagsElement.setCustomValidity('хэш-тег начинается с символа #');
+  const array = value.split(/\s/); 
+  let hashtagsNumber = 0;
+  for (let str of array) {
+    if (str[0] === '#') {
+      if (str.length === 1) {
+        hashtagsElement.setCustomValidity('хеш-тег не может состоять только из одной решётки');
         break;
       }
-
-      if (str.length > 20) {
-        hashtagsElement.setCustomValidity('максимальная длина одного хэш-тега 20 символов, включая решётку');
+      const match = regex.exec(str);
+      if (!match) {
+        hashtagsElement.setCustomValidity(`Неправильный хэштег ${str}. Строка после решётки может состоять только из букв ` +
+          '(русских и английских) и чисел');
         break;
       }
-
-      if (str !== '') {
-        hashtagsNumber++;
-        hashtagsElement.setCustomValidity('');
-      }
+    }
+    else if (str !== '') {
+      hashtagsElement.setCustomValidity('хэш-тег начинается с символа #');
+      break;
     }
 
-    if (hashtagsNumber > 5) {
-      hashtagsElement.setCustomValidity('нельзя указать больше пяти хэш-тегов');
+    if (str.length > 20) {
+      hashtagsElement.setCustomValidity('максимальная длина одного хэш-тега 20 символов, включая решётку');
+      break;
     }
 
-    hashtagsElement.reportValidity();
+    if (str !== '') {
+      hashtagsNumber++;
+      hashtagsElement.setCustomValidity('');
+    }
+  }
+
+  if (hashtagsNumber > 5) {
+    hashtagsElement.setCustomValidity('нельзя указать больше пяти хэш-тегов');
+  }
+
+  hashtagsElement.reportValidity();
 }
 
 const setHashtagsInputValidation = function () {
