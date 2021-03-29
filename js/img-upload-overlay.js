@@ -1,5 +1,6 @@
 /* global noUiSlider */
 import {isEscPressed} from './util.js';
+import {sendData} from './server-data.js'
 
 const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
@@ -14,7 +15,8 @@ const MAX_COMMENT_LENGTH = 140;
 
 const fileElement = document.querySelector('#upload-file');
 const overlayElement = document.querySelector('.img-upload__overlay');
-const previewImageElement = document.querySelector('.img-upload__preview')
+const previewImageContainerElement = document.querySelector('.img-upload__preview')
+const previewImageElement = previewImageContainerElement.querySelector('img')
 const bodyElement = document.querySelector('body');
 bodyElement.classList.remove('modal-open');
 
@@ -66,7 +68,7 @@ const displayOverlayOnUpload = function (doOnSuccess) {
       else if (effect === PHOBOS_FILTER_EFFECT) {
         measure = 'px';
       }
-      imgElement.style = `${filter[effect]}(${value}${measure})`;
+      previewImageElement.style = `${filter[effect]}(${value}${measure})`;
     });
 
     doOnSuccess();
@@ -80,7 +82,7 @@ const onMinusButtonClick = function () {
   }
   const newValue = +scaleValue - SCALE_DIFF;
   scaleControlElement.value = `${newValue}%`; 
-  previewImageElement.style = `transform: scale(${newValue / 100})`; 
+  previewImageContainerElement.style = `transform: scale(${newValue / 100})`; 
 }
 
 const setMinusButtonListener = function () { 
@@ -94,27 +96,26 @@ const onPlusButtonClick = function () {
   }
   const newValue = +scaleValue + SCALE_DIFF;
   scaleControlElement.value = `${newValue}%`; 
-  previewImageElement.style = `transform: scale(${newValue / 100})`; 
+  previewImageContainerElement.style = `transform: scale(${newValue / 100})`; 
 }
 
 const setPlusButtonListener = function () { 
   biggerButtonElement.addEventListener('click', onPlusButtonClick);
 }
 
-const imgElement = previewImageElement.querySelector('img');
 let effectClass;
 
 const onEffectsRadioButtonClick = function (evt) {
   const element = evt.target;
   if (element.name === 'effect') {
-    imgElement.classList.remove(effectClass);
+    previewImageElement.classList.remove(effectClass);
     effect = element.value;
     effectClass = 'effects__preview--' + effect;
-    imgElement.classList.add(effectClass);
+    previewImageElement.classList.add(effectClass);
 
     if (effect === ORIGINAL_FILTER_EFFECT) {
       hideSlider();
-      imgElement.style = '';
+      previewImageElement.style = '';
     }
     else {
       slider.updateOptions(sliderOptions[effect]);
@@ -211,17 +212,37 @@ const onUploadCancelButtonClick = () => {
   closeOverlay();
 }
 
+const formElement = overlayElement.querySelector('#upload-select-image');
+
+const setFormSubmitListener = function (onSuccess, onFail) {
+  formElement.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const formData = new FormData(adFormElement);
+    sendData(
+      formData, 
+      () => onSuccess(),
+      () => onFail(),
+    );
+  });
+}
+
 closeOverlay = () => {
   overlayElement.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
 
-  smallerButtonElement.removeEventListener('click', onMinusButtonClick);
+  /*smallerButtonElement.removeEventListener('click', onMinusButtonClick);
   biggerButtonElement.removeEventListener('click', onPlusButtonClick);
   effectsListElement.removeEventListener('click', onEffectsRadioButtonClick);
   hashtagsElement.removeEventListener('input', onHashtagsElementInput);
-  commentElement.removeEventListener('input', onCommentElementInput);
+  commentElement.removeEventListener('input', onCommentElementInput);*/
   window.removeEventListener('keydown', onWindowEscKeydown);
   uploadCancelButton.removeEventListener('click', onUploadCancelButtonClick);
+
+  previewImageContainerElement.style = '';
+  previewImageElement.classList.remove(effectClass);
+  previewImageElement.style = '';
+  scaleControlElement.value = DEFAULT_SCALE_VALUE + '%';
+  effect = ORIGINAL_FILTER_EFFECT;
 }
 
 const setOverlayCloseListeners = function () {
@@ -236,5 +257,6 @@ export {
   setHashtagsInputValidation,
   setEffectsListClickListener,
   setCommentInputValidation,
-  setOverlayCloseListeners
+  setOverlayCloseListeners,
+  setFormSubmitListener
 };

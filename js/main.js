@@ -9,7 +9,8 @@ import {
   setHashtagsInputValidation,
   setEffectsListClickListener,
   setCommentInputValidation,
-  setOverlayCloseListeners
+  setOverlayCloseListeners,
+  setFormSubmitListener
 } from './img-upload-overlay.js';
 
 const GENERATED_OBJECTS_NUMBER = 25;
@@ -22,13 +23,14 @@ const onThumbnailClick = function (evt) {
 
 drawThumbnails(photos, onThumbnailClick);
 
-const doOnSuccess = function () {
-  setMinusButtonListener();
-  setPlusButtonListener();
-  setEffectsListClickListener();
-  setHashtagsInputValidation();
-  setCommentInputValidation();
+const doOnSuccessDisplay = function () {
   setOverlayCloseListeners();
 }
 
-displayOverlayOnUpload(doOnSuccess);
+displayOverlayOnUpload(doOnSuccessDisplay);
+
+setMinusButtonListener();
+setPlusButtonListener();
+setEffectsListClickListener();
+setHashtagsInputValidation();
+setCommentInputValidation();
